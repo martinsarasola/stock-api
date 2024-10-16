@@ -31,3 +31,22 @@ router.put("/productos/actualizar-stock", async (req, res) => {
     res.status(500).send({ mensaje: "Hubo un error en el servidor.", error });
   }
 });
+
+// Obtener PRODUCTOS por categoria
+router.get("/productos/categoria/:categoria", async (req, res) => {
+  try {
+    const products = await Products.find({ categoria: req.params.categoria });
+
+    if (!products) {
+      return res
+        .status(404)
+        .send({ mensaje: "No se encontró el producto especificado" });
+    }
+
+    res.status(200).send(products);
+  } catch (error) {
+    res.status(500).send({ mensaje: "Hubo un error en el servidor", error });
+  }
+});
+
+module.exports = router;
