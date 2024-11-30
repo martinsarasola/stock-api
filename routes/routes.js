@@ -4,9 +4,20 @@ const Products = require("../models/productmodel");
 const authMiddleware = require("../middleware/authMiddleware");
 
 // Conseguir todo el STOCK de PRODUCTOS
-router.get("/productos", authMiddleware, async (req, res) => {
+router.get("/productos", async (req, res) => {
   const products = await Products.find();
   res.status(200).send(products);
+});
+
+// Crear nuevo producto
+router.post("/productos", authMiddleware, async (req, res) => {
+  const body = req.body;
+  try {
+    const nuevoProducto = await Products.create(body); // Insertar en la base de datos
+    res.status(201).send(nuevoProducto); // 201 indica que se ha creado un recurso
+  } catch (error) {
+    res.status(400).send(error); // Manejar errores
+  }
 });
 
 // Actualizar el STOCK de varios PRODUCTOS
@@ -29,6 +40,19 @@ router.put("/productos/actualizar-stock", async (req, res) => {
     res.status(200).send({ productosActualizados });
   } catch (error) {
     res.status(500).send({ mensaje: "Hubo un error en el servidor.", error });
+  }
+});
+
+// Eliminar producto por ID
+router.delete("/productos/:id", async (req, res) => {
+  try {
+    const productoEliminado = await Products.findByIdAndDelete(req.params.id); // Eliminar libro por ID
+    if (!productoEliminado) {
+      return res.status(404).send({ mensaje: "Producto no encontrado" });
+    }
+    res.status(200).send({ mensaje: "Producto eliminado correctamente" });
+  } catch (error) {
+    res.status(500).send({ mensaje: "Error al eliminar el Producto", error });
   }
 });
 
