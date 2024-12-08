@@ -16,7 +16,10 @@ router.post("/productos", authMiddleware, async (req, res) => {
     const nuevoProducto = await Products.create(body);
     res.status(201).send(nuevoProducto);
   } catch (error) {
-    res.status(400).send(error);
+    console.error("Error al crear producto:", error);
+    res
+      .status(400)
+      .send({ mensaje: "Error al crear el producto", error: error.message });
   }
 });
 
