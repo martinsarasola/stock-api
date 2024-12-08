@@ -13,10 +13,10 @@ router.get("/productos", async (req, res) => {
 router.post("/productos", authMiddleware, async (req, res) => {
   const body = req.body;
   try {
-    const nuevoProducto = await Products.create(body); // Insertar en la base de datos
-    res.status(201).send(nuevoProducto); // 201 indica que se ha creado un recurso
+    const nuevoProducto = await Products.create(body);
+    res.status(201).send(nuevoProducto);
   } catch (error) {
-    res.status(400).send(error); // Manejar errores
+    res.status(400).send(error);
   }
 });
 
@@ -46,7 +46,7 @@ router.put("/productos/actualizar-stock", async (req, res) => {
 // Eliminar producto por ID
 router.delete("/productos/:id", async (req, res) => {
   try {
-    const productoEliminado = await Products.findByIdAndDelete(req.params.id); // Eliminar libro por ID
+    const productoEliminado = await Products.findByIdAndDelete(req.params.id);
     if (!productoEliminado) {
       return res.status(404).send({ mensaje: "Producto no encontrado" });
     }
