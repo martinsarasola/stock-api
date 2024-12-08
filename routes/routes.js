@@ -13,6 +13,7 @@ router.get("/productos", async (req, res) => {
 router.post("/productos", authMiddleware, async (req, res) => {
   const body = req.body;
   try {
+    console.log("Datos recibidos:", req.body);
     const nuevoProducto = await Products.create(body);
     res.status(201).send(nuevoProducto);
   } catch (error) {
