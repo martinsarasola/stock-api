@@ -24,6 +24,23 @@ router.post("/productos", authMiddleware, async (req, res) => {
   }
 });
 
+// Actualizar producto por ID
+router.put("/productos/actualizar-producto/:id", async (req, res) => {
+  try {
+    const productoActualizado = await Products.findByIdAndUpdate(
+      req.params.id,
+      req.body,
+      { new: true, runValidators: true }
+    );
+    if (!productoActualizado) {
+      return res.status(404).send({ mensaje: "Producto no encontrado" });
+    }
+    res.status(200).send(productoActualizado);
+  } catch (error) {
+    res.status(400).send({ mensaje: "Error al actualizar el producto", error });
+  }
+});
+
 // Actualizar el STOCK de varios PRODUCTOS
 router.put("/productos/actualizar-stock", async (req, res) => {
   try {
